@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label, Input, Col, Row } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
-
+import { Loading } from './LoadingComponent';
 
 
 function RenderDish({dish}) {
@@ -51,30 +51,47 @@ function RenderComments({comments, addComment, dishID}) {
 }
 
 const Dishdetail = (props) => {
-  return (
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+  else if (props.errMess) {
     <div className="container">
       <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
-          <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-        </Breadcrumb>
-        <div className="col-12">
-          <h3>{props.dish.name}</h3>
-          <hr />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          <RenderDish dish={props.dish} />
-        </div>
-        <div className="col-12 col-md-5 m-1">
-          <RenderComments comments={props.comments}
-            addComment={props.addComment}
-            dishID={props.dish.id} />
-        </div>
+        <h4>{props.errMess}</h4>
       </div>
     </div>
-  );
+  }
+  else if (props.dish != null)
+    return (
+      <div className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
+            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>{props.dish.name}</h3>
+            <hr />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12 col-md-5 m-1">
+            <RenderDish dish={props.dish} />
+          </div>
+          <div className="col-12 col-md-5 m-1">
+            <RenderComments comments={props.comments}
+              addComment={props.addComment}
+              dishID={props.dish.id} />
+          </div>
+        </div>
+      </div>
+    );
 }
 
 const required = (val) => val && val.length;
