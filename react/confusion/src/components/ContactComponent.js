@@ -184,7 +184,7 @@ class Contact extends Component {
                                   </Button>
                               </Col>
                           </Row>
-                      </Form>
+                      </ Form>
                   </div>
             </div>
         </div>
